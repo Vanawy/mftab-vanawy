@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="ru">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        {% block meta %}{% endblock %}
+        <title>{% block title %}Welcome!{% endblock %}</title>
+        {% block css %}{% endblock %}
+
+        {#<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script> #}
+
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+        <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
+
+
+        <script src="/res/node_modules/bootstrap-sweetalert/dist/sweetalert.min.js"></script>
+        <link rel="stylesheet" type="text/css" href="/res/node_modules/bootstrap-sweetalert/dist/sweetalert.css">
+
+        <link rel="stylesheet" type="text/css" href="/res/fonts/icons/style.css">
+        <link rel="stylesheet" type="text/css" href="/res/css/style.css">
+        
+		
+    </head>	
+    <body>
+        <div class="header">
+            <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarText" aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <a class="navbar-brand" href="{{path('home')}}" ><small>shedule.</small>vanawy.ru</a>
+                <div class="collapse navbar-collapse" id="navbarText">
+                    <ul class="navbar-nav mr-auto">
+                        <li class="nav-item">
+                            <a class="nav-link {{ app.request.pathinfo == path('home') ? 'active'}}" href="{{path('home')}}">
+                                Главная <span class="icon-home"></span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link disabled" {# href="#" #}>
+                                Телеграм бот <span class="icon-telegram"></span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link disabled" {# href="#" #}>
+                                Хостинг <span class="icon-terminal">
+                            </a>
+                        </li>
+                    </ul>
+                    <span class="navbar-text">
+                        Последнеее обновление: <span class="badge badge-{{updateTime|default('') != '' ? 'success':'danger' }}">{{updateTime|default('undefined')}}</span>
+                    </span>
+                </div>
+            </nav>
+        </div>
+        {% block main %}
+        {% endblock %}
+        <footer class="footer bg-light">
+            <div class="container">
+                <span class="text-muted">
+                    <a class="icon-github" target="_blank" href="https://github.com/vanawy"></a>
+                    <a class="icon-telegram" target="_blank" href="https://t.me/vanawy"></a>
+                    <a class="icon-vk" target="_blank" href="https://vk.com/id417103366"></a>
+                    {# <a class="icon-tumblr" href="https://vanawy.tumblr.com"></a> #}
+                    <a class="icon-twitter" target="_blank" href="https://twitter.com/vanawy"></a>
+                    <a style="float: right">Ilya Sakharchuk - 2018</a>
+                </span>
+            </div>
+        </footer>
+        {% block js %}{% endblock %}
+    </body>
+</html>
