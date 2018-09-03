@@ -1,0 +1,19 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{course.name}} - расписание ФизМата БрГУ{% endblock %}
+
+{% block meta %}
+	<meta name="description" content="Расписание физико-математического факультета БрГУ им. А.С.Пушкина. {{course.name}}.
+	Группы: {% for group in course.groups %}{{group.name}}{{loop.last ? "" : ", "}}{% endfor %}.">
+{% endblock meta %}
+
+{% block main %}
+	<h1>ФизМат БрГУ: {{course.name}}</h1>
+	<div class="row main">
+		{% for group in course.groups %}
+			<div class="col-xs-12 col-sm-6 col-md-4 col-lg-3 btn-course">
+				<a href="{{path('group', {'course': course.url, 'url': group.url})}}" class="btn btn-dark btn-huge btn-block">{{group.name}}</a>	
+			</div>
+		{% endfor %}
+	</div>
+{% endblock %}

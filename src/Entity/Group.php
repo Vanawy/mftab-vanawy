@@ -6,7 +6,10 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
+use App\Service\AppService;
+
 /**
+ * @ORM\Table(name="groupTable")
  * @ORM\Entity(repositoryClass="App\Repository\GroupRepository")
  */
 class Group
@@ -31,9 +34,14 @@ class Group
 
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Pair", mappedBy="linkedGroup", orphanRemoval=true)
+     * @ORM\OneToMany(targetEntity="App\Entity\Pair", mappedBy="linkedGroup", orphanRemoval=true, cascade={"persist", "remove"})
      */
     private $pairs;
+
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $url;
 
     public function __construct()
     {
@@ -53,6 +61,9 @@ class Group
     public function setName(string $name): self
     {
         $this->name = $name;
+        
+        $as = new AppService();
+        $this->setUrl($as->url($name));
 
         return $this;
     }
@@ -97,6 +108,18 @@ class Group
                 $pair->setLinkedGroup(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getUrl(): ?string
+    {
+        return $this->url;
+    }
+
+    public function setUrl(string $url): self
+    {
+        $this->url = $url;
 
         return $this;
     }

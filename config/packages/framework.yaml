@@ -8,6 +8,10 @@ framework:
     # Remove or comment this section to explicitly disable session support.
     session:
         handler_id: ~
+    
+    profiler:
+        matcher:
+            path: ^/upload/
 
     #esi: true
     #fragments: true

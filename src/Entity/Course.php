@@ -6,6 +6,8 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
+use App\Service\AppService;
+
 /**
  * @ORM\Entity(repositoryClass="App\Repository\CourseRepository")
  */
@@ -30,7 +32,7 @@ class Course
     private $shedule;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Group", mappedBy="course")
+     * @ORM\OneToMany(targetEntity="App\Entity\Group", mappedBy="course", cascade={"persist", "remove"})
      */
     private $groups;
 
@@ -39,7 +41,11 @@ class Course
      * @ORM\Column(type="array")
      */
     private $times;
-    
+
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $url;   
 
     public function getTimes(): ?array
     {
@@ -71,6 +77,9 @@ class Course
     public function setName(string $name): self
     {
         $this->name = $name;
+
+        $as = new AppService();
+        $this->setUrl($as->url($name));
 
         return $this;
     }
@@ -114,6 +123,18 @@ class Course
                 $group->setCourse(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getUrl(): ?string
+    {
+        return $this->url;
+    }
+
+    public function setUrl(string $url): self
+    {
+        $this->url = $url;
 
         return $this;
     }

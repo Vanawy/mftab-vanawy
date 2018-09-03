@@ -1,10 +1,14 @@
 <!DOCTYPE html>
-<html lang="ru">
+{% set updateTime = shedule|default(null) ? shedule.updated : null %}
+<html lang="ru-BY">
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-        {% block meta %}{% endblock %}
-        <title>{% block title %}Welcome!{% endblock %}</title>
+        {% block meta %}
+            <meta name="description" content="Актуальное расписание занятий физико-математического факультета БрГУ. 
+            Последнее обновление: {{updateTime|default(null) != null ? updateTime|date('d-m-Y H:i') : 'Неизвестно'}}">
+        {% endblock %}
+        <title>{% block title %}Расписание физико-математического факультета БРГУ имени А. С. Пушкина{% endblock %}</title>
         {% block css %}{% endblock %}
 
         {#<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
@@ -22,6 +26,8 @@
 
         <link rel="stylesheet" type="text/css" href="/res/fonts/icons/style.css">
         <link rel="stylesheet" type="text/css" href="/res/css/style.css">
+
+        <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet"> 
         
 		
     </head>	
@@ -31,7 +37,7 @@
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarText" aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
-                <a class="navbar-brand" href="{{path('home')}}" ><small>shedule.</small>vanawy.ru</a>
+                <a class="navbar-brand va-color" href="{{path('home')}}" >VA</a>
                 <div class="collapse navbar-collapse" id="navbarText">
                     <ul class="navbar-nav mr-auto">
                         <li class="nav-item">
@@ -44,20 +50,22 @@
                                 Телеграм бот <span class="icon-telegram"></span>
                             </a>
                         </li>
-                        <li class="nav-item">
-                            <a class="nav-link disabled" {# href="#" #}>
+                       {# <li class="nav-item">
+                            <a class="nav-link" href="http://ihc.ru" target="_blank">
                                 Хостинг <span class="icon-terminal">
                             </a>
-                        </li>
+                        </li>#}
                     </ul>
                     <span class="navbar-text">
-                        Последнеее обновление: <span class="badge badge-{{updateTime|default('') != '' ? 'success':'danger' }}">{{updateTime|default('undefined')}}</span>
+                        Последнеее обновление: <span class="badge badge-{{updateTime|default(null) != null ? 'success':'danger' }}">{{updateTime != null ? updateTime|date('d-m-Y H:i') : 'Неизвестно'}}</span>
                     </span>
                 </div>
             </nav>
         </div>
-        {% block main %}
-        {% endblock %}
+        <div class="container">
+            {% block main %}
+            {% endblock %}
+        </div>
         <footer class="footer bg-light">
             <div class="container">
                 <span class="text-muted">
@@ -65,8 +73,10 @@
                     <a class="icon-telegram" target="_blank" href="https://t.me/vanawy"></a>
                     <a class="icon-vk" target="_blank" href="https://vk.com/id417103366"></a>
                     {# <a class="icon-tumblr" href="https://vanawy.tumblr.com"></a> #}
-                    <a class="icon-twitter" target="_blank" href="https://twitter.com/vanawy"></a>
+                    {# <a class="icon-twitter" target="_blank" href="https://twitter.com/vanawy"></a> #}
                     <a style="float: right">Ilya Sakharchuk - 2018</a>
+                    <a href="http://ihc.ru" target="_blank"><span class="icon-terminal">
+                    </a>
                 </span>
             </div>
         </footer>

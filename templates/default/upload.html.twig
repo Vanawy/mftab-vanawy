@@ -1,5 +1,20 @@
 {% extends 'base.html.twig' %}
 
 {% block main %}
-	
+	<ul>
+	{% for course in shedule.courses %}
+		<li>{{course.name}}
+		<ul>
+			{% for group in course.groups %}
+				<li>{{group.name}}
+					<ul>	
+					{% for pair in group.pairs %}
+						<li>{{pair.day}}-{{pair.number}}: {{pair.text}}</li>
+					{% endfor %}
+					</ul>
+				</li>
+			{% endfor %}
+		</ul></li>
+	{% endfor %}
+	</ul>
 {% endblock %}

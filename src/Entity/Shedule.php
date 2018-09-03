@@ -19,7 +19,7 @@ class Shedule
     private $id;
 
     /**
-     * @ORM\Column(type="integer")
+     * @ORM\Column(type="integer", nullable=true)
      */
     private $week;
 
@@ -29,13 +29,13 @@ class Shedule
     private $updated;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Course", mappedBy="shedule")
+     * @ORM\OneToMany(targetEntity="App\Entity\Course", mappedBy="shedule", cascade={"persist", "remove"})
      */
     private $courses;
 
     public function __construct()
     {
-        $this->updated = new DateTime();
+        $this->updated = new \DateTime();
         $this->courses = new ArrayCollection(); 
     }
 

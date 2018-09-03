@@ -3,7 +3,24 @@
 }
 
 .footer {
-    position: absolute;
-    bottom: 0;
+    /*position: absolute;
+    bottom: 0;*/
     width: 100%;
+}
+
+.btn-huge{
+    padding-top:20px;
+    padding-bottom:20px;
+}
+
+.main .btn-course{
+	margin-bottom: 20px;
+}
+
+.va-color{
+	color: #66ffff !important;
+}
+
+body{
+    font-family: 'Roboto', sans-serif;
 }

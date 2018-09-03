@@ -5,6 +5,11 @@ namespace App\Service;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 
+use App\Entity\Shedule;
+use App\Entity\Group;
+use App\Entity\Course;
+use App\Entity\Pair;
+
 class SpreadsheetService
 {
 	private $reader;
@@ -27,9 +32,76 @@ class SpreadsheetService
 	}
 
 	public function parseShedule(){
-		dump($this->reader->listWorksheetNames($this->filename));
+        $shedule = new Shedule();
 
-		return null;
+        $courseNames = $this->reader->listWorksheetNames($this->filename);
+
+        $courses = array();
+
+        foreach ($courseNames as $key => $courseName) {
+        	$course = new Course();
+        	$course->setName($courseName);
+        	$shedule->addCourse($course);
+
+        	$courses[] = $course;
+        }
+
+        foreach ($courses as $key => $course) {
+        	$this->spreadsheet->setActiveSheetIndex($key);
+        	$sheet = $this->spreadsheet->getActiveSheet();
+
+        	$col = 1;
+        	$times = array();
+        	for($row = 6; $row < 10; $row++){
+        		
+				$times[] = $this->getValue($col, $row, $sheet);
+        	}
+
+        	$row = 4;
+        	$col = 2;
+        	$next = true;
+        	while($next){
+        		$name = null;
+        		$name = $this->getValue($col, $row, $sheet);
+        		if($name == null){
+        			$next = false;
+        		}else{
+        			$group = new Group();
+        			$group->setName($name);
+
+        			$pair_rows = 
+        				  [  6, 7, 8, 9,
+							11,12,13,14,
+							16,17,18,19,
+							21,22,23,24,
+							26,27,28,29,
+						    31,32,33,34];
+
+					foreach ($pair_rows as $key => $pair_row) {
+						$number = ($key % 4) + 1;
+						$day = intdiv($key, 4) + 1;
+						$text = $this->getValue($col, $pair_row, $sheet);
+						$text = preg_replace('!Ф *И *З *И *Ч *Е *С *К *А *Я *К *У *Л *Ь *Т *У *Р *А!', 'ФИЗКУЛЬТУРА', $text);
+						$text = $text == null ? '' : $text;
+
+						$pair = new Pair();
+						$pair->setText($text)
+							 ->setNumber($number)
+						     ->setDay($day); 
+
+						$group->addPair($pair);
+					}
+
+        			$course->addGroup($group);
+
+        			$col++;
+        		}
+        	}
+
+        	$course->setTimes($times);	
+        }
+
+		return $shedule;
 	}
 
 	// $ss = new SpreadsheetService();
@@ -58,6 +130,15 @@ class SpreadsheetService
 
 	// $writer = new Xlsx($spreadsheet);
 	// $writer->save('hello world.xlsx');
+
+	private function getValue($col, $row, $s)
+	{
+		if($s->getCellByColumnAndRow($col, $row)->isInMergeRange()){
+			return $this->getMergedRangeValue($s, $col, $row);
+		}else{
+			return $s->getCellByColumnAndRow($col, $row)->getCalculatedValue();
+		}
+	}
 
 	private function getMergedRangeValue($sheet, $col, $row)
 	{

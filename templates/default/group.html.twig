@@ -1,0 +1,38 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{group.name}} {{course.name}} - расписание ФизМата БрГУ{% endblock %}
+
+{% block meta %}
+	<meta name="description" content="Расписание физико-математического факультета БрГУ им. А.С.Пушкина. {{group.name}}.{#  #}">
+{% endblock meta %}
+
+{% block main %}
+	<h1>ФизМат БрГУ: {{group.name}} - {{course.name}}</h1>
+	<div class="row main">
+		{% for day in 1..6 %}
+			<div class="col-12 col-sm-12 col-md-6 col-lg-4 btn-course">
+				<table class="table table-striped">
+					<thead>
+						<tr>
+							<th scope="col" colspan="2" style="margin: auto;">
+								<center>
+									<h3>	
+										<span class="badge badge-secondary">{{["Понедельник", "Вторник", "Среда", "Четверг", "Пятница", "Суббота"][day-1]}}</span>
+									</h3>
+								</center>
+							</th>
+						</tr>
+					</thead>
+					<tbody>
+						{% for pair in group.pairs if pair.day == day %}
+							<tr>
+								<th scope="row">{{course.times[loop.index0]}}</th>
+								<td>{{pair.text}}</td>
+							</tr>
+						{% endfor %}
+					</tbody>
+				</table>	
+			</div>
+		{% endfor %}
+	</div>
+{% endblock %}

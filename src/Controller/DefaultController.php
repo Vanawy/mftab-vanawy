@@ -6,10 +6,16 @@ namespace App\Controller;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+
+use App\Entity\Shedule;
+use App\Entity\Group;
+use App\Entity\Course;
+use App\Entity\Pair;
 
 use App\Service\SpreadsheetService;
 
-class DefaultController
+class DefaultController extends Controller
 {
 
     /**
@@ -18,11 +24,52 @@ class DefaultController
      */
     public function mainAction()
     {
-        return;
+        $em = $this->getDoctrine()->getManager();
+        $shedule = $em->getRepository(Shedule::class)->findOneBy([], ['updated' => 'DESC']);
+
+        return array(
+            'shedule' => $shedule,
+        );
     }
 
     /**
-     * @Route("/info", name="info")
+     * @Route("/show/{url}", name="course")
+     * @Template()
+     */
+    public function courseAction($url)
+    {
+        $em = $this->getDoctrine()->getManager();
+        $shedule = $em->getRepository(Shedule::class)->findOneBy([], ['updated' => 'DESC']);
+
+        $course = $em->getRepository(Course::class)->findOneBy(['shedule' => $shedule, 'url' => $url]);
+
+        return array(
+            'shedule' => $shedule,
+            'course' => $course,
+        );
+    }
+
+    /**
+     * @Route("/show/{course}/{url}", name="group")
+     * @Template()
+     */
+    public function groupAction($course, $url)
+    {
+        $em = $this->getDoctrine()->getManager();
+        $shedule = $em->getRepository(Shedule::class)->findOneBy([], ['updated' => 'DESC']);
+
+        $course = $em->getRepository(Course::class)->findOneBy(['shedule' => $shedule, 'url' => $course]);
+        $group = $em->getRepository(Group::class)->findOneBy(['course' => $course, 'url' => $url]);
+
+        return array(
+            'shedule' => $shedule,
+            'course' => $course,
+            'group' => $group,
+        );
+    }
+
+    /**
+     * @Route("/info/", name="info")
      * @Template()
      */
     public function infoAction()
@@ -31,16 +78,25 @@ class DefaultController
     }
 
     /**
-     * @Route("/upload", name="upload")
+     * @Route("/upload/", name="upload")
      * @Template()
      */
     public function uploadAction()
     {
-    	$ss = new SpreadsheetService();
-    	$ss->open('01.xls');
-    	$ss->parseShedule();
-    	return;
+        if(true){
+            $ss = new SpreadsheetService();
+            $ss->open('01.xls');
+            $shedule = $ss->parseShedule();
+            $em = $this->getDoctrine()->getManager();
+            $em->persist($shedule);
+            $em->flush();
+
+            return array(
+                'shedule' => $shedule,
+            );
+        }
+
+        return;
+
     }
-
-
 }
