@@ -24,3 +24,8 @@
 body{
     font-family: 'Roboto', sans-serif;
 }
+
+.table-header{
+    background-color: #333;
+    color: #fff;
+}

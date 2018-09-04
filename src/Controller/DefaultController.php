@@ -76,27 +76,4 @@ class DefaultController extends Controller
     {
     	return array('info' => phpinfo());
     }
-
-    /**
-     * @Route("/upload/", name="upload")
-     * @Template()
-     */
-    public function uploadAction()
-    {
-        if(true){
-            $ss = new SpreadsheetService();
-            $ss->open('01.xls');
-            $shedule = $ss->parseShedule();
-            $em = $this->getDoctrine()->getManager();
-            $em->persist($shedule);
-            $em->flush();
-
-            return array(
-                'shedule' => $shedule,
-            );
-        }
-
-        return;
-
-    }
 }
