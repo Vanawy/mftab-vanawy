@@ -9,9 +9,8 @@ framework:
     session:
         handler_id: ~
     
-    profiler:
-        matcher:
-            path: ^/upload/
+    # profiler:
+    #     matcher:
 
     #esi: true
     #fragments: true
